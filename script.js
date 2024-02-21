@@ -23,9 +23,8 @@ fetch("/settings").then((fetchresponse) => {
   fetchresponse.json().then((jsonvalue) => {
     settings = jsonvalue
     console.log(settings)
+    if (settings["cookies-consent"] == "undefined" || settings["cookies-consent"] == "false") {
+      on()
+    }
   })
-}).then(() => {
-  if (settings["cookies-consent"] == "undefined") {
-    on()
-  }
 })
