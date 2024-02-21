@@ -28,3 +28,11 @@ fetch("/settings").then((fetchresponse) => {
     }
   })
 })
+
+function consentdisable() {
+  fetch("/set-settings?cookiesconsent=true&analytics=false")
+}
+
+function consentenable() {
+  fetch("/set-settings?cookiesconsent=true&analytics=true")
+}

@@ -78,7 +78,7 @@ app.get("/settings", (req, res) => {
 })
 
 app.get("/set-settings", (req, res) => {
-  const cookiesconsent = req.query["cookies-consent"]
+  const cookiesconsent = req.query["cookiesconsent"]
   const analytics = req.query["analytics"]
 
   if (cookiesconsent || analytics) {
