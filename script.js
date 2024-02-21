@@ -1,3 +1,5 @@
+const { response } = require("express");
+
 const searchBar = document.getElementById('search-bar');
 
 searchBar.addEventListener('keydown', (event) => {
@@ -17,3 +19,14 @@ function off() {
   document.getElementById("overlay").style.display = "none";
 }
 
+let settings = {}
+
+fetch("/settings").then((fetchresponse) => {
+  fetchresponse.json().then((jsonvalue) => {
+    settings = jsonvalue
+  })
+}).then(() => {
+  if (settings["cookies-consent"] == "undefined") {
+    on()
+  }
+})

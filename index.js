@@ -77,6 +77,19 @@ app.get("/settings", (req, res) => {
   res.send(JSON.stringify(answer))
 })
 
+app.get("/set-settings", (req, res) => {
+  const cookiesconsent = req.query["cookies-consent"]
+  const analytics = req.query["analytics"]
+
+  if (cookiesconsent || analytics) {
+    res.cookie("cookies-consent", cookiesconsent)
+    res.cookie("analytics", analytics)
+    res.sendStatus(200)
+  } else {
+    res.sendStatus(400)
+  }
+})
+
 app.listen(port, () => {
   console.log("We are online on port", port);
 });
