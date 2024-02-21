@@ -1,6 +1,13 @@
 const app = require("express")();
 const port = 3000;
 const axios = require("axios");
+let analyticsdata = {}
+if (process.env["API"]) {
+  
+} else {
+  require("dotenv").config({path: ".env.development.local"})
+}
+
 const apikey = process.env["API"]
 
 
@@ -53,7 +60,7 @@ app.get("/search", (req, res) => {
           </div>
         `;
       });
-      mainhtml += "</body></html>";
+      mainhtml += "</body><script src='/analytics.js'></script></html>";
       res.send(mainhtml);
     });
 });
@@ -81,13 +88,30 @@ app.get("/set-settings", (req, res) => {
   const cookiesconsent = req.query["cookiesconsent"]
   const analytics = req.query["analytics"]
 
-  if (cookiesconsent || analytics) {
+
     res.cookie("cookies-consent", cookiesconsent)
     res.cookie("analytics", analytics)
     res.sendStatus(200)
+
+})
+
+app.get("/analytics.js", (req, res) => {
+  res.sendFile(__dirname + "/analytics.js")
+})
+
+app.get("/api/analytics/report", (req, res) => {
+  const searchquery = req.query["q"]
+
+  if (analyticsdata[searchquery] == undefined) {
+    analyticsdata[searchquery] = 1
   } else {
-    res.sendStatus(400)
+    analyticsdata[searchquery] += 1
   }
+  res.sendStatus(200)
+})
+
+app.get("/api/analytics", (req, res) => {
+  res.send(JSON.stringify(analyticsdata))
 })
 
 app.listen(port, () => {

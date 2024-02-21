@@ -9,8 +9,13 @@
   "author": "Stoppedwumm",
   "license": "ISC",
   "dependencies": {
+    "@vercel/kv": "^1.0.1",
     "axios": "^1.6.7",
     "cookie-parser": "^1.4.6",
     "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5",
+    "vercel": "^33.5.1"
   }
 }

@@ -30,13 +30,15 @@ fetch("/settings").then((fetchresponse) => {
 })
 
 function consentdisable() {
-  fetch("/set-settings?cookiesconsent=true&analytics=false")
-  off()
+  fetch("/set-settings?cookiesconsent=true&analytics=false").then((val) => {
+    off()
+  })
 }
 
 function consentenable() {
-  fetch("/set-settings?cookiesconsent=true&analytics=true")
-  off()
+  fetch("/set-settings?cookiesconsent=true&analytics=true").then((val) => {
+    off()
+  })
 }
 
 // Stoppedwumm was here
