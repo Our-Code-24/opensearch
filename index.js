@@ -37,7 +37,7 @@ app.get("/search", (req, res) => {
   </head>
   <body>
   <header>
-    <h1>Open Search</h1>
+    <h1><a href="/">OpenSearch</a></h1>
     <form action="/search" method="GET">
       <input type="text" name="q" placeholder="Search..." id="search-bar">
       <button type="submit">Search</button>
@@ -45,22 +45,29 @@ app.get("/search", (req, res) => {
   </header>
   `;
 
+if (query == "" || query == undefined) {
+  res.send(`Search cannot be empty<br><br><button onclick='window.location.href="/"'>Back</button><link rel="stylesheet" href="style.css"><meta name="viewport" content="width=device-width, initial-scale=1.0">`)
+  return
+}
+
   axios
     .get(
-      "https://customsearch.googleapis.com/customsearch/v1?cx=16cbbe12944fc4eb4&gl=us&q=" + query + "&key=" + apikey
+      "https://customsearch.googleapis.com/customsearch/v1?cx=16cbbe12944fc4eb4&gl=de&q=" + query + "&key=" + apikey
     )
     .then((value) => {
       value.data.items.forEach((item) => {
+        console.log(item)
         mainhtml += `
           <div name="${item.cacheId}">
             <h2><a href="${item.formattedUrl}">${item.htmlTitle}</a></h2>
             <p>Von <a href="${item.displayLink}">${item.displayLink}</a></p>
             <p>${item.htmlSnippet}</p>
+            <img src="${item.pagemap.cse_image.src}" alt="Fucking Image">
             <p><a href="${item.formattedUrl}">${item.htmlFormattedUrl}</a></p>
           </div>
         `;
       });
-      mainhtml += "</body><script src='/analytics.js'></script></html>";
+      mainhtml += "</body><script src='/analytics.js'></script><script src='/search.js'></script></html>";
       res.send(mainhtml);
     });
 });
@@ -112,6 +119,10 @@ app.get("/api/analytics/report", (req, res) => {
 
 app.get("/api/analytics", (req, res) => {
   res.send(JSON.stringify(analyticsdata))
+})
+
+app.get("/search.js", (req, res) => {
+  res.sendFile(__dirname + "/search.js")
 })
 
 app.listen(port, () => {
