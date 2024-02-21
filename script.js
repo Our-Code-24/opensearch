@@ -31,8 +31,10 @@ fetch("/settings").then((fetchresponse) => {
 
 function consentdisable() {
   fetch("/set-settings?cookiesconsent=true&analytics=false")
+  off()
 }
 
 function consentenable() {
   fetch("/set-settings?cookiesconsent=true&analytics=true")
+  off()
 }
