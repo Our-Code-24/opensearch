@@ -3,7 +3,8 @@ const port = 3000;
 const axios = require("axios");
 const apikey = process.env["API"]
 
-// API Key:  
+
+app.use(require("cookie-parser")())
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html")
@@ -56,6 +57,14 @@ app.get("/search", (req, res) => {
       res.send(mainhtml);
     });
 });
+
+app.get("/settings", (req, res) => {
+  let answer = {}
+  answer["cookies-consent"] = req.cookies["cookies-consent"]
+  answer["analytics"] = req.cookies["analytics"]
+
+  res.send(JSON.stringify(answer))
+})
 
 app.listen(port, () => {
   console.log("We are online on port", port);
