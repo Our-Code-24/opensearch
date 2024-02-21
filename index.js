@@ -60,8 +60,19 @@ app.get("/search", (req, res) => {
 
 app.get("/settings", (req, res) => {
   let answer = {}
-  answer["cookies-consent"] = req.cookies["cookies-consent"]
-  answer["analytics"] = req.cookies["analytics"]
+
+  if (req.cookies["cookies-consent"]) {
+    answer["cookies-consent"] = req.cookies["cookies-consent"]
+  } else {
+    answer["cookies-consent"] = "undefined"
+  }
+  
+  if (req.cookies["analytics"]) {
+    answer["analytics"] = req.cookies["analytics"]
+  } else {
+    answer["analytics"] = "undefined"
+  }
+  
 
   res.send(JSON.stringify(answer))
 })
