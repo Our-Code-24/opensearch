@@ -1,5 +1,3 @@
-const { response } = require("express");
-
 const searchBar = document.getElementById('search-bar');
 
 searchBar.addEventListener('keydown', (event) => {
