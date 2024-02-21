@@ -39,7 +39,7 @@ app.get("/search", (req, res) => {
 
   axios
     .get(
-      "https://customsearch.googleapis.com/customsearch/v1?cx=16cbbe12944fc4eb4&gl=us&q=" + query + "&key=AIzaSyBwNr0qX9Lfrhbemnm11ANuP6VgBLovQe0"
+      "https://customsearch.googleapis.com/customsearch/v1?cx=16cbbe12944fc4eb4&gl=us&q=" + query + "&key=" + apikey
     )
     .then((value) => {
       value.data.items.forEach((item) => {
