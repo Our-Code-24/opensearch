@@ -22,3 +22,14 @@ axios.get("opensearch-mu.vercel.app/api/analytics").then((res) => {
   console.log(res["dogs"])
 })
 ```
+
+## People who made this project possible
+### Contributors
+
+<!-- readme: collaborators,contributors -start -->
+<!-- readme: collaborators,contributors -end -->
+
+### Botslaves
+
+<!-- readme: bots -start -->
+<!-- readme: bots -end -->
