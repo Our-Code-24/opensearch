@@ -108,7 +108,7 @@ app.get("/set-settings", (req, res) => {
 })
 
 app.get("/analytics.js", (req, res) => {
-  res.sendFile(__dirname + "/analytics.js")
+  res.sendFile(__dirname + "/publicjs/analytics.js")
 })
 
 app.get("/api/analytics/report", (req, res) => {
@@ -127,7 +127,11 @@ app.get("/api/analytics", (req, res) => {
 })
 
 app.get("/search.js", (req, res) => {
-  res.sendFile(__dirname + "/search.js")
+  res.sendFile(__dirname + "/publicjs/search.js")
+})
+
+app.get("/search-cookies.js", (req, res) => {
+  res.sendFile(__dirname + "/publicjs/searchcookies.js")
 })
 
 app.listen(port, () => {
