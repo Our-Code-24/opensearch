@@ -55,7 +55,6 @@ if (query == "" || query == undefined) {
 
   axios.get("https://customsearch.googleapis.com/customsearch/v1?cx=16cbbe12944fc4eb4&gl=de&q=" + query + "&key=" + apikey).then((value) => {
       value.data.items.forEach((item) => {
-        console.log(item)
         mainhtml += `
           <div name="${item.cacheId}">
             <h2><a href="${item.formattedUrl}">${item.htmlTitle}</a></h2>
