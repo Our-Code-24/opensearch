@@ -13,6 +13,9 @@ const apikey = process.env["API"]
 
 app.use(require("cookie-parser")())
 
+const { rateLimiterUsingThirdParty } = require('./middlewares');
+app.use(rateLimiterUsingThirdParty);
+
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html")
 });
