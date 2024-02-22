@@ -26,20 +26,9 @@ axios.get("opensearch-mu.vercel.app/api/analytics").then((res) => {
 })
 ```
 
-## People who made this project possible
-### Contributors
+## Devs
 
-<!-- readme: collaborators,contributors -start -->
-<!-- readme: collaborators,contributors -end -->
-
-### Botslaves
-
-<!-- readme: bots -start -->
-<!-- readme: bots -end -->
-
-## Contributors ✨
-
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+Thanks goes to these developers:
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
