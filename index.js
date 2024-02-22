@@ -53,11 +53,7 @@ if (query == "" || query == undefined) {
   return
 }
 
-  axios
-    .get(
-      "https://customsearch.googleapis.com/customsearch/v1?cx=16cbbe12944fc4eb4&gl=de&q=" + query + "&key=" + apikey
-    )
-    .then((value) => {
+  axios.get("https://customsearch.googleapis.com/customsearch/v1?cx=16cbbe12944fc4eb4&gl=de&q=" + query + "&key=" + apikey).then((value) => {
       value.data.items.forEach((item) => {
         console.log(item)
         mainhtml += `
@@ -68,11 +64,18 @@ if (query == "" || query == undefined) {
             <p><a href="${item.formattedUrl}">${item.htmlFormattedUrl}</a></p>
           </div>
         `;
-      });
+      })
       mainhtml += "</body><script src='/analytics.js'></script><script src='/search.js'></script></html>";
       res.send(mainhtml);
-    });
-});
+    }).catch((err) => {
+      res.status(500).send(`
+      <error>
+      <h1>Error: ${err}</h1>
+      </error>
+      Please open a bug issue at <a href="https://github.com/Our-Code-24/opensearch/issues">our github repo</a>
+      `)
+    })
+})
 
 app.get("/settings", (req, res) => {
   let answer = {}
