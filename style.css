@@ -6,7 +6,7 @@ body {
     color: white;
   }
   
-  header {
+  footer, header {
     background-color: #3e3e3e;
     padding: 10px;
     display: flex;
@@ -66,12 +66,4 @@ body {
 
   b {
     color: red;
-  }
-
-  footer {
-    background-color: #f0f0f0;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
   }
