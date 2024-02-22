@@ -1,4 +1,7 @@
 # opensearch
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 A open source google search app made with expressjs
 
 [![CodeQL](https://github.com/Our-Code-24/opensearch/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/Our-Code-24/opensearch/actions/workflows/github-code-scanning/codeql)
@@ -33,3 +36,25 @@ axios.get("opensearch-mu.vercel.app/api/analytics").then((res) => {
 
 <!-- readme: bots -start -->
 <!-- readme: bots -end -->
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Stoppedwumm"><img src="https://avatars.githubusercontent.com/u/129097720?v=4?s=100" width="100px;" alt="Stoppedwumm"/><br /><sub><b>Stoppedwumm</b></sub></a><br /><a href="https://github.com/Our-Code-24/opensearch/commits?author=Stoppedwumm" title="Code">💻</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
