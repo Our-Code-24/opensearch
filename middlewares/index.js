@@ -3,5 +3,5 @@ function createApp() {
 }
 
 // @ts-ignore
-module.exports = { rateLimiter: require(__dirname + "/middlewares/ratelimiter.js"), quickfunctions: {createnewapp: createApp} } ;
+module.exports = { rateLimiter: require(__dirname + "/middlewares/ratelimiter"), quickfunctions: {createnewapp: createApp} } ;
 // I think this is making trouble
