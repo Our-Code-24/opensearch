@@ -3,15 +3,16 @@ const {kv} = require("@vercel/kv")
 async function bgq(q) {
     try {
         kv.get("analytics_data").then((val) => {
-            console.log(val)
             let bigjson = val
             if (bigjson[q]) {
-                bigjson[q]++
+                bigjson[q]+= 1
             } else {
-                bigjson = 1
+                bigjson[q] = 1
             }
-            return
-        })
+            kv.set("analytics_data", JSON.stringify(bigjson)).then(() => {
+                return 
+            })
+            })
     } catch (err) {
         console.log("Not working as expected:", err)
     }
