@@ -8,7 +8,7 @@ A open source google search app made with expressjs
 - Analytics are now avaible
 
 ## For data scientists
-Need test data for your project? You can use an HTTP GET Request at </api/analytics> to get the latest data and trends!
+Need test data for your project? You can use an HTTP GET Request at <https://opensearch-mu.vercel.app/api/analytics> to get the latest data and trends!
 
 Example (NodeJS):
 ```javascript
