@@ -23,7 +23,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/style.css", (req,res) => {
-  res.sendFile(__dirname + "/style.css")
+  res.sendFile(__dirname + "/html/style.css")
 })
 
 app.get("/script.js", (req, res) => {
