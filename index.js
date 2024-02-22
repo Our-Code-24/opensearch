@@ -62,7 +62,6 @@ if (query == "" || query == undefined) {
             <h2><a href="${item.formattedUrl}">${item.htmlTitle}</a></h2>
             <p>Von <a href="${item.displayLink}">${item.displayLink}</a></p>
             <p>${item.htmlSnippet}</p>
-            <img src="${item.pagemap.cse_image.src}" alt="Fucking Image">
             <p><a href="${item.formattedUrl}">${item.htmlFormattedUrl}</a></p>
           </div>
         `;
