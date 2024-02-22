@@ -2,13 +2,14 @@
 A open source google search app made with expressjs
 
 [![CodeQL](https://github.com/Our-Code-24/opensearch/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/Our-Code-24/opensearch/actions/workflows/github-code-scanning/codeql)
+[![Report an bug](https://img.shields.io/badge/Report%20an%20bug-red?style=flat&link=https://github.com/Our-Code-24/opensearch/issues)](https://github.com/Our-Code-24/opensearch/issues)
 
 ## Changelog
 - Added Darkmode
 - Analytics are now avaible
 
 ## For data scientists
-Need test data for your project? You can use an HTTP GET Request at </api/analytics> to get the latest data and trends!
+Need test data for your project? You can use an HTTP GET Request at <https://opensearch-mu.vercel.app/api/analytics> to get the latest data and trends!
 
 Example (NodeJS):
 ```javascript
@@ -21,3 +22,14 @@ axios.get("opensearch-mu.vercel.app/api/analytics").then((res) => {
   console.log(res["dogs"])
 })
 ```
+
+## People who made this project possible
+### Contributors
+
+<!-- readme: collaborators,contributors -start -->
+<!-- readme: collaborators,contributors -end -->
+
+### Botslaves
+
+<!-- readme: bots -start -->
+<!-- readme: bots -end -->
