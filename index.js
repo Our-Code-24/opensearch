@@ -39,6 +39,13 @@ app.get("/search", (req, res) => {
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
+  <div id="overlay">
+    <div id="popup">
+      <p>This site uses cookies! Also, you can help us make this site better by enabling analytics</p>
+      <button onclick="consentdisable()">Accept and disable analytics</button>
+      <button onclick="consentenable()">Accept and enable analytics</button>
+    </div>
+  </div> 
   <header>
     <h1><a href="/">OpenSearch</a></h1>
     <form action="/search" method="GET">
@@ -64,7 +71,7 @@ if (query == "" || query == undefined) {
           </div>
         `;
       })
-      mainhtml += "</body><script src='/analytics.js'></script><script src='/search.js'></script></html>";
+      mainhtml += "</body><script src='/analytics.js'></script><script src='/search.js'></script><script src='/search-cookies.js'></script></html>";
       res.send(mainhtml);
     }).catch((err) => {
       res.status(500).send(`
