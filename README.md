@@ -25,6 +25,10 @@ axios.get("opensearch-mu.vercel.app/api/analytics").then((res) => {
 })
 ```
 
+**WE DO NOT GURANTEE ACCURATE DATA**
+
+If you try getting us in trouble, we will refer to this line.
+
 ## Devs
 
 Thanks goes to these developers:
