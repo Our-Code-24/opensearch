@@ -2,6 +2,8 @@ const { rateLimiter, quickfunctions } = require('./src/middlewares/index.js');
 const app = quickfunctions.createnewapp()
 const port = 3000;
 const axios = require("axios");
+const {kv} = require("@vercel/kv")
+
 let analyticsdata = {}
 if (process.env["API"]) {
   
@@ -120,16 +122,15 @@ app.get("/analytics.js", (req, res) => {
 app.get("/api/analytics/report", (req, res) => {
   const searchquery = req.query["q"]
 
-  if (analyticsdata[searchquery] == undefined) {
-    analyticsdata[searchquery] = 1
-  } else {
-    analyticsdata[searchquery] += 1
-  }
-  res.sendStatus(200)
+  quickfunctions.analyticstool(searchquery).then(() => {
+    res.sendStatus(200)
+  })
 })
 
 app.get("/api/analytics", (req, res) => {
-  res.send(JSON.stringify(analyticsdata))
+  kv.get("analytics_data").then((val) => {
+    res.send(val)
+  })
 })
 
 app.get("/search.js", (req, res) => {
