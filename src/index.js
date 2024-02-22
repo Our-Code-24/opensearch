@@ -17,7 +17,7 @@ app.use(require("cookie-parser")())
 app.use(rateLimiter);
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html")
+  res.sendFile(__dirname + "/html/index.html")
 });
 
 app.get("/style.css", (req,res) => {
