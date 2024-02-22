@@ -39,6 +39,13 @@ app.get("/search", (req, res) => {
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
+  <div id="overlay">
+    <div id="popup">
+      <p>This site uses cookies! Also, you can help us make this site better by enabling analytics</p>
+      <button onclick="consentdisable()">Accept and disable analytics</button>
+      <button onclick="consentenable()">Accept and enable analytics</button>
+    </div>
+  </div> 
   <header>
     <h1><a href="/">OpenSearch</a></h1>
     <form action="/search" method="GET">
@@ -55,7 +62,6 @@ if (query == "" || query == undefined) {
 
   axios.get("https://customsearch.googleapis.com/customsearch/v1?cx=16cbbe12944fc4eb4&gl=de&q=" + query + "&key=" + apikey).then((value) => {
       value.data.items.forEach((item) => {
-        console.log(item)
         mainhtml += `
           <div name="${item.cacheId}">
             <h2><a href="${item.formattedUrl}">${item.htmlTitle}</a></h2>
@@ -65,7 +71,7 @@ if (query == "" || query == undefined) {
           </div>
         `;
       })
-      mainhtml += "</body><script src='/analytics.js'></script><script src='/search.js'></script></html>";
+      mainhtml += "</body><script src='/analytics.js'></script><script src='/search.js'></script><script src='/search-cookies.js'></script></html>";
       res.send(mainhtml);
     }).catch((err) => {
       res.status(500).send(`
@@ -108,7 +114,7 @@ app.get("/set-settings", (req, res) => {
 })
 
 app.get("/analytics.js", (req, res) => {
-  res.sendFile(__dirname + "/analytics.js")
+  res.sendFile(__dirname + "/publicjs/analytics.js")
 })
 
 app.get("/api/analytics/report", (req, res) => {
@@ -127,7 +133,11 @@ app.get("/api/analytics", (req, res) => {
 })
 
 app.get("/search.js", (req, res) => {
-  res.sendFile(__dirname + "/search.js")
+  res.sendFile(__dirname + "/publicjs/search.js")
+})
+
+app.get("/search-cookies.js", (req, res) => {
+  res.sendFile(__dirname + "/publicjs/searchcookies.js")
 })
 
 app.listen(port, () => {

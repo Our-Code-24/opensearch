@@ -15,8 +15,7 @@ fetch("/settings").then((val) => {
         if (answer["analytics"] == "false") {
             console.log("Analytics are currently off")
         } else if (answer["analytics"] == "undefined") {
-            console.log("User didn't agree to cookies, redirecting...")
-            window.location.href = "/"
+            console.log("User didn't agree to cookies, opening popup")
         } else {
             getQueryVariable("q").then((query) => {
                 fetch("/api/analytics/report?q=" + query)
