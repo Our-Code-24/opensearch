@@ -25,7 +25,7 @@ app.get("/style.css", (req,res) => {
 })
 
 app.get("/script.js", (req, res) => {
-  res.sendFile(__dirname + "/script.js")
+  res.sendFile(__dirname + "/publicjs/script.js")
 })
 
 app.get("/search", (req, res) => {
