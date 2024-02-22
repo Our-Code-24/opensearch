@@ -36,7 +36,7 @@ Thanks goes to these developers:
   <tbody>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Stoppedwumm"><img src="https://avatars.githubusercontent.com/u/129097720?v=4?s=100" width="100px;" alt="Stoppedwumm"/><br /><sub><b>Stoppedwumm</b></sub></a><br /><a href="https://github.com/Our-Code-24/opensearch/commits?author=Stoppedwumm" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/StoppedwummSites"><img src="https://avatars.githubusercontent.com/u/150438484?v=4?s=100" width="100px;" alt="StoppedwummSites"/><br /><sub><b>StoppedwummSites</b></sub></a><br /><a href="https://github.com/Our-Code-24/opensearch/commits?author=StoppedwummSites" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/StoppedwummSites"><img src="https://avatars.githubusercontent.com/u/150438484?v=4?s=100" width="100px;" alt="StoppedwummSites"/><br /><sub><b>StoppedwummSites</b></sub></a><br /><a href="https://github.com/Our-Code-24/opensearch/commits?author=StoppedwummSites" title="Code">💻</a> <a href="#design-StoppedwummSites" title="Design">🎨</a></td>
     </tr>
   </tbody>
 </table>
