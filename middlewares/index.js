@@ -3,4 +3,4 @@ function createApp() {
 }
 
 // @ts-ignore
-module.exports = { rateLimiter: require('./rateLimiter.js'), quickfunctions: {createnewapp: createApp} } ;
+module.exports = { rateLimiter: require(__dirname + '/rateLimiter.js'), quickfunctions: {createnewapp: createApp} } ;
