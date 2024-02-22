@@ -1,4 +1,4 @@
-const { rateLimiter, quickfunctions } = require('./middlewares/index.js');
+const { rateLimiter, quickfunctions } = require('./src/middlewares/index.js');
 const app = quickfunctions.createnewapp()
 const port = 3000;
 const axios = require("axios");
