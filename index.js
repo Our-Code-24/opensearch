@@ -1,4 +1,5 @@
-const app = require("express")();
+const { rateLimiter, quickfunctions } = require('./middlewares');
+const app = quickfunctions.createnewapp()
 const port = 3000;
 const axios = require("axios");
 let analyticsdata = {}
@@ -13,8 +14,7 @@ const apikey = process.env["API"]
 
 app.use(require("cookie-parser")())
 
-const { rateLimiterUsingThirdParty } = require('./middlewares');
-app.use(rateLimiterUsingThirdParty);
+app.use(rateLimiter);
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html")
