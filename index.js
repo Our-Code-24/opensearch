@@ -1,4 +1,4 @@
-const { rateLimiter, quickfunctions } = require('./middlewares/index.js');
+const { rateLimiter, quickfunctions } = require('./src/middlewares/index.js');
 const app = quickfunctions.createnewapp()
 const port = 3000;
 const axios = require("axios");
@@ -17,7 +17,7 @@ app.use(require("cookie-parser")())
 app.use(rateLimiter);
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html")
+  res.sendFile(__dirname + "/html/index.html")
 });
 
 app.get("/style.css", (req,res) => {
