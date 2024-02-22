@@ -141,6 +141,40 @@ app.get("/search-cookies.js", (req, res) => {
   res.sendFile(__dirname + "/publicjs/searchcookies.js")
 })
 
+app.get("/beta", (req, res) => {
+  res.sendFile(__dirname + "/html/beta.html")
+})
+
+app.get("/api/beta/feedback/report", (req, res) => {
+  kv.get("betafeedback").then((val) => {
+    if (val != undefined) {
+      let bigjson = JSON.parse(val)
+      bigjson.push(req.query)
+      kv.set("betafeedback", bigjson).then(() => {
+        res.redirect("/")
+      })
+    } else {
+      kv.set("betafeedback", "[]").then(() => {
+        console.log("Set is good")
+        kv.get("betafeedback").then((newval) => {
+          console.log("[]")
+          let bigjson = []
+          bigjson.push(req.query)
+          kv.set("betafeedback", bigjson).then(() => {
+            res.redirect("/")
+          })
+        })
+      })
+    }
+  })
+})
+
+app.get("/api/beta/feedback", (req, res) => {
+  kv.get("betafeedback").then((val) => {
+    res.send(val)
+  })
+})
+
 app.listen(port, () => {
   console.log("We are online on port", port);
 });

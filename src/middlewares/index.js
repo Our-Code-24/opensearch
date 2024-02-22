@@ -38,8 +38,5 @@ async function analytics(q) {
     })
 }
 
-// @ts-ignore
-console.log(__dirname)
-
 module.exports = { rateLimiter: require(__dirname + "/ratelimiter/ratelimiter.js"), quickfunctions: {"createnewapp": createApp, "analyticstool": analytics} } ;
 // I think this is making trouble
