@@ -1,4 +1,33 @@
 <!DOCTYPE html>
-<html>
-    
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>OpenSearch | Beta Feedback</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div id="overlay">
+            <div id="popup">
+              <p>This site uses cookies! Also, you can help us make this site better by enabling analytics</p>
+              <button onclick="consentdisable()">Accept and disable analytics</button>
+              <button onclick="consentenable()">Accept and enable analytics</button>
+            </div>
+        </div>
+        <header>
+            <button onclick='window.location.href="/beta"'>Back to opensearch</button>
+        </header>
+        <main>
+            <h1>Beta Feedback</h1>
+            <p>Please share your opinion with us!</p>
+            <form action="/api/beta/feedback/report" method="get">
+                <label for="rating">Your rating of our website</label><br>
+                <input type="range" name="rating" min="0" max="10"><br>
+                <label for="feedback">What is good/what can we make better in your opinion:</label><br><br>
+                <textarea name="feedback" cols="50" rows="10" id="textarea"></textarea><br><br>
+                <input type="submit" value="Absenden" id="submit">
+            </form>
+        </main>
+    </body>
+    <script src="/search-cookies.js"></script>
 </html>

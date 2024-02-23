@@ -4,6 +4,19 @@ const port = 3000;
 const axios = require("axios");
 const {kv} = require("@vercel/kv")
 
+function sanitize(string) {
+  const map = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#x27;',
+      "/": '&#x2F;',
+  };
+  const reg = /[&<>"'/]/ig;
+  return string.replace(reg, (match)=>(map[match]));
+}
+
 let analyticsdata = {}
 if (process.env["API"]) {
   
@@ -139,6 +152,42 @@ app.get("/search.js", (req, res) => {
 
 app.get("/search-cookies.js", (req, res) => {
   res.sendFile(__dirname + "/publicjs/searchcookies.js")
+})
+
+app.get("/beta", (req, res) => {
+  res.sendFile(__dirname + "/html/beta.html")
+})
+
+app.get("/api/beta/feedback/report", (req, res) => {
+  kv.get("betafeedback").then((val) => {
+    if (val != undefined) {
+      let bigjson = val
+      bigjson.push(sanitize(req.query))
+      kv.set("betafeedback", bigjson).then(() => {
+        res.redirect("/")
+      })
+    } else {
+      kv.set("betafeedback", "[]").then(() => {
+        kv.get("betafeedback").then((newval) => {
+          let bigjson = newval
+          bigjson.push(sanitize(req.query))
+          kv.set("betafeedback", bigjson).then(() => {
+            res.redirect("/")
+          })
+        })
+      })
+    }
+  })
+})
+
+app.get("/api/beta/feedback", (req, res) => {
+  kv.get("betafeedback").then((val) => {
+    if (sanitize(req.query["code"]) == process.env["FEEDBACK"]) {
+      res.send(val)
+    } else {
+      res.sendStatus(403)
+    }
+  })
 })
 
 app.listen(port, () => {
