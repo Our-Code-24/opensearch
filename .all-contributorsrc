@@ -26,6 +26,17 @@
         "code",
         "design"
       ]
+    },
+    {
+      "login": "vercel",
+      "name": "Vercel",
+      "avatar_url": "https://avatars.githubusercontent.com/u/14985020?v=4",
+      "profile": "https://vercel.com",
+      "contributions": [
+        "platform",
+        "tool",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
