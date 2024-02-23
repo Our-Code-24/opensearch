@@ -148,17 +148,15 @@ app.get("/beta", (req, res) => {
 app.get("/api/beta/feedback/report", (req, res) => {
   kv.get("betafeedback").then((val) => {
     if (val != undefined) {
-      let bigjson = JSON.parse(val)
+      let bigjson = val
       bigjson.push(req.query)
       kv.set("betafeedback", bigjson).then(() => {
         res.redirect("/")
       })
     } else {
       kv.set("betafeedback", "[]").then(() => {
-        console.log("Set is good")
         kv.get("betafeedback").then((newval) => {
-          console.log("[]")
-          let bigjson = []
+          let bigjson = newval
           bigjson.push(req.query)
           kv.set("betafeedback", bigjson).then(() => {
             res.redirect("/")
@@ -171,7 +169,11 @@ app.get("/api/beta/feedback/report", (req, res) => {
 
 app.get("/api/beta/feedback", (req, res) => {
   kv.get("betafeedback").then((val) => {
-    res.send(val)
+    if (req.query["code"] == process.env["FEEDBACK"]) {
+      res.send(val)
+    } else {
+      res.sendStatus(403)
+    }
   })
 })
 
