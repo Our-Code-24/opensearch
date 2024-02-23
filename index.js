@@ -12,6 +12,22 @@ if (process.env["API"]) {
   require("dotenv").config({path: ".env.development.local"})
 }
 
+function sanitizeString(input) {
+  // Use a regular expression to remove any HTML tags
+  const sanitizedString = input.replace(/<[^>]*>/g, '');
+
+  // Optionally, escape special characters to prevent XSS
+  const escapedString = sanitizedString.replace(/[<>&]/g, char => {
+    return {
+      '<': '&lt;',
+      '>': '&gt;',
+      '&': '&amp;'
+    }[char];
+  });
+
+  return escapedString;
+}
+
 const apikey = process.env["API"]
 
 
@@ -73,10 +89,10 @@ if (query == "" || query == undefined) {
   return
 }
 
-  axios.get("https://customsearch.googleapis.com/customsearch/v1?cx=16cbbe12944fc4eb4&gl=de&q=" + query + "&key=" + apikey).then((value) => {
-      axios.get("localhost:3000/api/preview?url=" + item.formattedUrl).then((axiosresult) => {
-        console.log(item.formattedUrl)
+  axios.get("https://customsearch.googleapis.com/customsearch/v1?cx=16cbbe12944fc4eb4&gl=de&q=" + sanitizeString(query) + "&key=" + apikey).then((value) => {
         value.data.items.forEach((item) => {
+          axios.get("localhost:3000/api/preview?url=" + item.formattedUrl).then((axiosresult) => {
+          console.log(axiosresult)
           mainhtml += `
             <div name="${item.cacheId}">
               <h2><a href="${item.formattedUrl}">${item.htmlTitle}</a></h2>
@@ -89,8 +105,9 @@ if (query == "" || query == undefined) {
         })
         mainhtml += "</body><script src='/analytics.js'></script><script src='/search.js'></script><script src='/search-cookies.js'></script></html>";
         res.send(mainhtml);
-      })
-    }).catch((err) => {
+        })
+      }).catch((err) => {
+        console.log(err)
       res.status(500).send(`
       <error>
       <h1>Error: ${err}</h1>
@@ -99,6 +116,8 @@ if (query == "" || query == undefined) {
       `)
     })
 })
+
+
 
 app.get("/settings", (req, res) => {
   let answer = {}
@@ -196,7 +215,7 @@ app.get("/api/preview", async (req, res) => {
   try {
     //get url to generate preview, the url will be based as a query param.
 
-    const { url } = req.query;
+    const { url } = sanitizeString(req.query);
     /*request url html document*/
     const { data } = await axios.get(url);
     //load html document in cheerio
