@@ -35,7 +35,7 @@ app.get("/", (req, res) => {
   res.redirect("/beta")
 })
 
-app.get("/beta/feedback", (req, res) => {
+app.get("/beta", (req, res) => {
   res.sendFile(__dirname + "/html/index.html")
 });
 
@@ -158,7 +158,7 @@ app.get("/search-cookies.js", (req, res) => {
   res.sendFile(__dirname + "/publicjs/searchcookies.js")
 })
 
-app.get("/beta", (req, res) => {
+app.get("/beta/feedback", (req, res) => {
   res.sendFile(__dirname + "/html/beta.html")
 })
 
