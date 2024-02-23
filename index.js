@@ -19,6 +19,10 @@ app.use(require("cookie-parser")())
 app.use(rateLimiter);
 
 app.get("/", (req, res) => {
+  res.redirect("/beta")
+})
+
+app.get("/beta", (req, res) => {
   res.sendFile(__dirname + "/html/index.html")
 });
 
