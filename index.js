@@ -3,6 +3,7 @@ const app = quickfunctions.createnewapp()
 const port = 3000;
 const axios = require("axios");
 const {kv} = require("@vercel/kv")
+const { load } = require("cheerio")
 
 let analyticsdata = {}
 if (process.env["API"]) {
@@ -73,18 +74,22 @@ if (query == "" || query == undefined) {
 }
 
   axios.get("https://customsearch.googleapis.com/customsearch/v1?cx=16cbbe12944fc4eb4&gl=de&q=" + query + "&key=" + apikey).then((value) => {
-      value.data.items.forEach((item) => {
-        mainhtml += `
-          <div name="${item.cacheId}">
-            <h2><a href="${item.formattedUrl}">${item.htmlTitle}</a></h2>
-            <p>Von <a href="${item.displayLink}">${item.displayLink}</a></p>
-            <p>${item.htmlSnippet}</p>
-            <p><a href="${item.formattedUrl}">${item.htmlFormattedUrl}</a></p>
-          </div>
-        `;
+      axios.get("localhost:3000/api/preview?url=" + item.formattedUrl).then((axiosresult) => {
+        console.log(item.formattedUrl)
+        value.data.items.forEach((item) => {
+          mainhtml += `
+            <div name="${item.cacheId}">
+              <h2><a href="${item.formattedUrl}">${item.htmlTitle}</a></h2>
+              <p>Von <a href="${item.displayLink}">${item.displayLink}</a></p>
+              <p>${item.htmlSnippet}</p>
+              <p><a href="${item.formattedUrl}">${item.htmlFormattedUrl}</a></p><br>
+              <img src="${axiosresult.image}>
+            </div>
+          `;
+        })
+        mainhtml += "</body><script src='/analytics.js'></script><script src='/search.js'></script><script src='/search-cookies.js'></script></html>";
+        res.send(mainhtml);
       })
-      mainhtml += "</body><script src='/analytics.js'></script><script src='/search.js'></script><script src='/search-cookies.js'></script></html>";
-      res.send(mainhtml);
     }).catch((err) => {
       res.status(500).send(`
       <error>
@@ -186,6 +191,48 @@ app.get("/api/beta/feedback", (req, res) => {
     }
   })
 })
+
+app.get("/api/preview", async (req, res) => {
+  try {
+    //get url to generate preview, the url will be based as a query param.
+
+    const { url } = req.query;
+    /*request url html document*/
+    const { data } = await axios.get(url);
+    //load html document in cheerio
+    const $ = load(data);
+
+    /*function to get needed values from meta tags to generate preview*/
+    const getMetaTag = (name) => {
+      return (
+        $(`meta[name=${name}]`).attr("content") ||
+        $(`meta[propety="twitter${name}"]`).attr("content") ||
+        $(`meta[property="og:${name}"]`).attr("content")
+      );
+    };
+
+    /*Fetch values into an object */
+    const preview = {
+      url,
+      title: $("title").first().text(),
+      favicon:
+        $('link[rel="shortcut icon"]').attr("href") ||
+        $('link[rel="alternate icon"]').attr("href"),
+      description: getMetaTag("description"),
+      image: getMetaTag("image"),
+      author: getMetaTag("author"),
+    };
+
+    //Send object as response
+    res.status(200).json(preview);
+  } catch (error) {
+    res
+      .status(500)
+      .json(
+        "Something went wrong, please check your internet connection and also the url you provided"
+      );
+  }
+});
 
 app.listen(port, () => {
   console.log("We are online on port", port);
