@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
 })
 
 app.get("/betatest.pdf", (req, res) => {
-  res.send(__dirname + "/betatest.pdf")
+  res.sendFile(__dirname + "/betatest.pdf")
 })
 
 app.get("/beta", (req, res) => {
