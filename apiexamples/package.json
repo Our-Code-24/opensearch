@@ -1,0 +1,11 @@
+{
+  "name": "apiexamples",
+  "version": "1.0.0",
+  "description": "",
+  "main": "info.js",
+  "scripts": {
+    "test": "node . && exit 0"
+  },
+  "author": "",
+  "license": "ISC"
+}
