@@ -2,8 +2,9 @@ const { rateLimiter, quickfunctions } = require('./src/middlewares/index.js');
 const app = quickfunctions.createnewapp()
 const port = 3000;
 const axios = require("axios");
-const {kv} = require("@vercel/kv")
-
+const {kv} = require("@vercel/kv");
+const cookieParser = require('cookie-parser');
+let nIntervId;
 let analyticsdata = {}
 if (process.env["API"]) {
   
@@ -115,8 +116,8 @@ app.get("/set-settings", (req, res) => {
   const analytics = req.query["analytics"]
 
 
-    res.cookie("cookies-consent", cookiesconsent)
-    res.cookie("analytics", analytics)
+    res.cookie("cookies-consent", cookiesconsent, {expires: new Date(253402300000000)})
+    res.cookie("analytics", analytics, {expires: new Date(253402300000000)})
     res.sendStatus(200)
 
 })
