@@ -29,8 +29,6 @@ const apikey = process.env["API"]
 
 app.use(require("cookie-parser")())
 
-app.use(rateLimiter);
-
 app.get("/", (req, res) => {
   res.redirect("/beta")
 })
