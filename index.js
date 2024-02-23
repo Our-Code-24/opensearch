@@ -4,19 +4,6 @@ const port = 3000;
 const axios = require("axios");
 const {kv} = require("@vercel/kv")
 
-function sanitize(string) {
-  const map = {
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#x27;',
-      "/": '&#x2F;',
-  };
-  const reg = /[&<>"'/]/ig;
-  return string.replace(reg, (match)=>(map[match]));
-}
-
 let analyticsdata = {}
 if (process.env["API"]) {
   
@@ -164,7 +151,7 @@ app.get("/api/beta/feedback/report", (req, res) => {
   kv.get("betafeedback").then((val) => {
     if (val != undefined) {
       let bigjson = val
-      bigjson.push(sanitize(req.query))
+      bigjson.push(req.query)
       kv.set("betafeedback", bigjson).then(() => {
         res.redirect("/")
       })
@@ -172,7 +159,7 @@ app.get("/api/beta/feedback/report", (req, res) => {
       kv.set("betafeedback", "[]").then(() => {
         kv.get("betafeedback").then((newval) => {
           let bigjson = newval
-          bigjson.push(sanitize(req.query))
+          bigjson.push(req.query)
           kv.set("betafeedback", bigjson).then(() => {
             res.redirect("/")
           })
