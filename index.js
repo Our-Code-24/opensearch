@@ -57,6 +57,10 @@ app.get("/search", (req, res) => {
       <button type="submit">Search</button>
     </form>
   </header>
+  <div id="warning">
+      <p>This is a beta site, expect some bugs</p>
+      <button onclick='window.location.href="/beta/feedback"'>Give Feedback</button>
+    </div><br>
   `;
 
 if (query == "" || query == undefined) {
