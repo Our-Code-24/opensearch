@@ -21,6 +21,10 @@ app.get("/", (req, res) => {
   res.redirect("/beta")
 })
 
+app.get("/betatest.pdf", (req, res) => {
+  res.sendFile(__dirname + "/betatest.pdf")
+})
+
 app.get("/beta", (req, res) => {
   res.sendFile(__dirname + "/html/index.html")
 });
