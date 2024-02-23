@@ -1,6 +1,6 @@
 # opensearch
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 A open source google search app made with expressjs
 
@@ -46,6 +46,7 @@ Thanks goes to these developers:
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Stoppedwumm"><img src="https://avatars.githubusercontent.com/u/129097720?v=4?s=100" width="100px;" alt="Stoppedwumm"/><br /><sub><b>Stoppedwumm</b></sub></a><br /><a href="https://github.com/Our-Code-24/opensearch/commits?author=Stoppedwumm" title="Code">💻</a> <a href="#design-Stoppedwumm" title="Design">🎨</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/StoppedwummSites"><img src="https://avatars.githubusercontent.com/u/150438484?v=4?s=100" width="100px;" alt="StoppedwummSites"/><br /><sub><b>StoppedwummSites</b></sub></a><br /><a href="https://github.com/Our-Code-24/opensearch/commits?author=StoppedwummSites" title="Code">💻</a> <a href="#design-StoppedwummSites" title="Design">🎨</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://vercel.com"><img src="https://avatars.githubusercontent.com/u/14985020?v=4?s=100" width="100px;" alt="Vercel"/><br /><sub><b>Vercel</b></sub></a><br /><a href="#platform-vercel" title="Packaging/porting to new platform">📦</a> <a href="#tool-vercel" title="Tools">🔧</a> <a href="https://github.com/Our-Code-24/opensearch/commits?author=vercel" title="Tests">⚠️</a></td>
     </tr>
   </tbody>
 </table>
