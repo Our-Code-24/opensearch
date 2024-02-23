@@ -21,11 +21,11 @@
       <button type="submit">Search</button>
     </form>
   </header>
+  <div id="warning">
+    <p>This is a beta site, expect some bugs</p>
+    <button onclick='window.location.href="/beta/feedback"'>Give Feedback</button>
+  </div><br>
   <main>
-    <div id="warning">
-      <p>This is a beta site, expect some bugs</p>
-      <button onclick='window.location.href="/beta/feedback"'>Give Feedback</button>
-    </div><br>
     <form action="/search" method="GET">
       <input type="text" name="q" placeholder="Search..." id="search-bar">
       <button type="submit">Search</button>
