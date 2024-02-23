@@ -13,8 +13,8 @@ if (process.env["API"]) {
 }
 
 function sanitizeString(input) {
-  // Use a regular expression to remove any HTML tags
-  const sanitizedString = input.replace(/<[^>]*>/g, '');
+  // Use a regular expression to remove any HTML tags and script-related patterns
+  const sanitizedString = input.replace(/<[^>]*>|&(?:(?:#x[0-9a-fA-F]+)|(?:#d[0-9]+)|[a-zA-Z]+);|<\s*\/\s*script\s*>/g, '');
 
   // Optionally, escape special characters to prevent XSS
   const escapedString = sanitizedString.replace(/[<>&]/g, char => {
