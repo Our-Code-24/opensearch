@@ -4,6 +4,19 @@ const port = 3000;
 const axios = require("axios");
 const {kv} = require("@vercel/kv")
 
+function sanitize(string) {
+  const map = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#x27;',
+      "/": '&#x2F;',
+  };
+  const reg = /[&<>"'/]/ig;
+  return string.replace(reg, (match)=>(map[match]));
+}
+
 let analyticsdata = {}
 if (process.env["API"]) {
   
@@ -169,7 +182,7 @@ app.get("/api/beta/feedback/report", (req, res) => {
 
 app.get("/api/beta/feedback", (req, res) => {
   kv.get("betafeedback").then((val) => {
-    if (req.query["code"] == process.env["FEEDBACK"]) {
+    if (sanitize(req.query["code"]) == process.env["FEEDBACK"]) {
       res.send(val)
     } else {
       res.sendStatus(403)
