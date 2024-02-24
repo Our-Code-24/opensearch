@@ -137,9 +137,13 @@ if (query == "" || query == undefined) {
               <p>Von <a href="${item.displayLink}">${item.displayLink}</a></p>
               <p>${item.htmlSnippet}</p>
               <p><a href="${item.formattedUrl}">${item.htmlFormattedUrl}</a></p><br>
-              <img src="${axiosresult.image}>
-            </div>
           `;
+          if (item.image) {
+            mainhtml += `<img src="${axiosresult.image}>`
+            mainhtml += "<div>"
+          } else {
+            mainhtml += "<div>"
+          }
         }).catch((err) => {
           res.send(err)
           console.log(err)
