@@ -39,11 +39,7 @@ async function LoadMetaData(url) {
     //Send object as response
     return preview
   } catch (error) {
-    res
-      .status(500)
-      .json(
-        "Something went wrong, please check your internet connection and also the url you provided"
-      );
+    console.log(error)
   }
 }
 
@@ -144,6 +140,9 @@ if (query == "" || query == undefined) {
               <img src="${axiosresult.image}>
             </div>
           `;
+        }).catch((err) => {
+          res.send(err)
+          console.log(err)
         })
         mainhtml += "</body><script src='/analytics.js'></script><script src='/search.js'></script><script src='/search-cookies.js'></script></html>";
         res.send(mainhtml);
