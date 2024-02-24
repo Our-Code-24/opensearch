@@ -138,7 +138,7 @@ if (query == "" || query == undefined) {
               <p>${item.htmlSnippet}</p>
               <p><a href="${item.formattedUrl}">${item.htmlFormattedUrl}</a></p><br>
           `;
-          if (item.image) {
+          if (axiosresult.image) {
             mainhtml += `<img src="${axiosresult.image}>`
             mainhtml += "<div>"
           } else {
