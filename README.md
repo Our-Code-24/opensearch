@@ -4,9 +4,9 @@
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 A open source google search app made with expressjs
 
-VOTE FOR A NEW FUNCTION:
-
-<https://pollunit.com/polls/s5b4tdmx8zhg7wwgul4y1g>
+Working on:
+- Reward System
+- Image Preview Sytem
 
 [![CodeQL](https://github.com/Our-Code-24/opensearch/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/Our-Code-24/opensearch/actions/workflows/github-code-scanning/codeql)
 [![Report an bug](https://img.shields.io/badge/Report%20an%20bug-red?style=flat&link=https://github.com/Our-Code-24/opensearch/issues)](https://github.com/Our-Code-24/opensearch/issues/new?assignees=Stoppedwumm%2C+StoppedwummSites&labels=bug&projects=&template=bug_report.md&title=%5BBUG%5D+A+informative+title)
