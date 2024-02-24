@@ -107,7 +107,7 @@ if (query == "" || query == undefined) {
         res.send(mainhtml);
         })
       }).catch((err) => {
-        console.log(err)
+      console.log(err)
       res.status(500).send(`
       <error>
       <h1>Error: ${err}</h1>
