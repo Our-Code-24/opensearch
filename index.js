@@ -144,9 +144,9 @@ if (query == "" || query == undefined) {
           res.send(err)
           console.log(err)
         })
+        })
         mainhtml += "</body><script src='/analytics.js'></script><script src='/search.js'></script><script src='/search-cookies.js'></script></html>";
         res.send(mainhtml);
-        })
       }).catch((err) => {
       console.log(err)
       res.status(500).send(`
