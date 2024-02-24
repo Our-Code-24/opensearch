@@ -5,6 +5,48 @@ const axios = require("axios");
 const {kv} = require("@vercel/kv")
 const { load } = require("cheerio")
 
+async function LoadMetaData(url) {
+  try {
+    //get url to generate preview, the url will be based as a query param.
+
+    const { url } = sanitizeString(req.query);
+    /*request url html document*/
+    const { data } = await axios.get(url);
+    //load html document in cheerio
+    const $ = load(data);
+
+    /*function to get needed values from meta tags to generate preview*/
+    const getMetaTag = (name) => {
+      return (
+        $(`meta[name=${name}]`).attr("content") ||
+        $(`meta[propety="twitter${name}"]`).attr("content") ||
+        $(`meta[property="og:${name}"]`).attr("content")
+      );
+    };
+
+    /*Fetch values into an object */
+    const preview = {
+      url,
+      title: $("title").first().text(),
+      favicon:
+        $('link[rel="shortcut icon"]').attr("href") ||
+        $('link[rel="alternate icon"]').attr("href"),
+      description: getMetaTag("description"),
+      image: getMetaTag("image"),
+      author: getMetaTag("author"),
+    };
+
+    //Send object as response
+    return preview
+  } catch (error) {
+    res
+      .status(500)
+      .json(
+        "Something went wrong, please check your internet connection and also the url you provided"
+      );
+  }
+}
+
 let analyticsdata = {}
 if (process.env["API"]) {
   
@@ -91,7 +133,7 @@ if (query == "" || query == undefined) {
 
   axios.get("https://customsearch.googleapis.com/customsearch/v1?cx=16cbbe12944fc4eb4&gl=de&q=" + sanitizeString(query) + "&key=" + apikey).then((value) => {
         value.data.items.forEach((item) => {
-          axios.get("localhost:3000/api/preview?url=" + item.formattedUrl).then((axiosresult) => {
+          LoadMetaData(item.formattedUrl).then((axiosresult) => {
           console.log(axiosresult)
           mainhtml += `
             <div name="${item.cacheId}">
@@ -212,45 +254,7 @@ app.get("/api/beta/feedback", (req, res) => {
 })
 
 app.get("/api/preview", async (req, res) => {
-  try {
-    //get url to generate preview, the url will be based as a query param.
-
-    const { url } = sanitizeString(req.query);
-    /*request url html document*/
-    const { data } = await axios.get(url);
-    //load html document in cheerio
-    const $ = load(data);
-
-    /*function to get needed values from meta tags to generate preview*/
-    const getMetaTag = (name) => {
-      return (
-        $(`meta[name=${name}]`).attr("content") ||
-        $(`meta[propety="twitter${name}"]`).attr("content") ||
-        $(`meta[property="og:${name}"]`).attr("content")
-      );
-    };
-
-    /*Fetch values into an object */
-    const preview = {
-      url,
-      title: $("title").first().text(),
-      favicon:
-        $('link[rel="shortcut icon"]').attr("href") ||
-        $('link[rel="alternate icon"]').attr("href"),
-      description: getMetaTag("description"),
-      image: getMetaTag("image"),
-      author: getMetaTag("author"),
-    };
-
-    //Send object as response
-    res.status(200).json(preview);
-  } catch (error) {
-    res
-      .status(500)
-      .json(
-        "Something went wrong, please check your internet connection and also the url you provided"
-      );
-  }
+  
 });
 
 app.listen(port, () => {
