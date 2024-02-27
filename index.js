@@ -5,11 +5,11 @@ const axios = require("axios");
 const {kv} = require("@vercel/kv")
 const { load } = require("cheerio")
 
-async function LoadMetaData(url) {
+async function LoadMetaData(inputurl) {
   try {
     //get url to generate preview, the url will be based as a query param.
 
-    const { url } = sanitizeString(req.query);
+    const { url } = sanitizeString(inputurl);
     /*request url html document*/
     const { data } = await axios.get(url);
     //load html document in cheerio
