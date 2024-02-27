@@ -177,7 +177,7 @@ if (query == "" || query == undefined) {
           </div>
         `;
       })
-      mainhtml += "</body><script src='/analytics.js'></script><script src='/search.js'></script><script src='/search-cookies.js'></script></html>";
+      mainhtml += "<footer><div>Not sure if its the right pages? Use our experiment: <a href='/img-p'>Image Preview</a></div></footer></body><script src='/analytics.js'></script><script src='/search.js'></script><script src='/search-cookies.js'></script></html>";
       res.send(mainhtml);
     }).catch((err) => {
       res.status(500).send(`
@@ -277,6 +277,10 @@ res.sendStatus(403); // Unauthorized
 }
 });
 });
+
+app.get("/img-p", (req, res) => {
+  res.sendFile(__dirname + "/html/img-p.html")
+})
 
 app.listen(port, () => {
 console.log("We are online on port", port);
