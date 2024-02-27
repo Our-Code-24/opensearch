@@ -140,9 +140,9 @@ if (query == "" || query == undefined) {
           `;
           if (axiosresult.image) {
             mainhtml += `<img src="${axiosresult.image}">`
-            mainhtml += "<div>"
+            mainhtml += "</div>"
           } else {
-            mainhtml += "<div>"
+            mainhtml += "</div>"
           }
         }).catch((err) => {
           res.send(err)
