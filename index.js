@@ -270,7 +270,7 @@ res.redirect("/");
 // Get feedback (requires authorization)
 app.get("/api/beta/feedback", (req, res) => {
 kv.get("betafeedback").then((val) => {
-if (sanitize(req.query["code"]) === process.env["FEEDBACK"]) {
+if (req.query["code"] === process.env["FEEDBACK"]) {
 res.send(val);
 } else {
 res.sendStatus(403); // Unauthorized
