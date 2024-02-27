@@ -1,40 +1,134 @@
 const { rateLimiter, quickfunctions } = require('./src/middlewares/index.js');
-const app = quickfunctions.createnewapp()
+const app = quickfunctions.createnewapp();
 const port = 3000;
 const axios = require("axios");
-const {kv} = require("@vercel/kv")
+const { kv } = require("@vercel/kv");
+const io = require("vercelsocket")(app);
 
-let analyticsdata = {}
-if (process.env["API"]) {
-  
-} else {
-  require("dotenv").config({path: ".env.development.local"})
+function getRndInteger(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-const apikey = process.env["API"]
+let analyticsdata = {};
+if (process.env["API"]) {
+  // ... existing code ...
+} else {
+  require("dotenv").config({ path: ".env.development.local" });
+}
 
+const apikey = process.env["API"];
 
-app.use(require("cookie-parser")())
+app.use(require("cookie-parser")());
 
+// Redirect to "/beta" for the root path
 app.get("/", (req, res) => {
-  res.redirect("/beta")
-})
-
-app.get("/betatest.pdf", (req, res) => {
-  res.sendFile(__dirname + "/betatest.pdf")
-})
-
-app.get("/beta", (req, res) => {
-  res.sendFile(__dirname + "/html/index.html")
+  res.redirect("/beta");
 });
 
-app.get("/style.css", (req,res) => {
-  res.sendFile(__dirname + "/html/style.css")
-})
+// Serve the betatest.pdf file
+app.get("/betatest.pdf", (req, res) => {
+  res.sendFile(__dirname + "/betatest.pdf");
+});
 
+// Serve the beta.html file for the "/beta" route
+app.get("/beta", (req, res) => {
+  res.sendFile(__dirname + "/html/index.html");
+});
+
+// Serve style.css
+app.get("/style.css", (req, res) => {
+  res.sendFile(__dirname + "/html/style.css");
+});
+
+// Serve script.js
 app.get("/script.js", (req, res) => {
-  res.sendFile(__dirname + "/publicjs/script.js")
-})
+  res.sendFile(__dirname + "/publicjs/script.js");
+});
+
+// Handle search requests
+app.get("/imagesearch", async (req, res) => {
+  const query = req.query["q"];
+
+  // Handle empty or undefined search query
+  if (!query) {
+    res.send(
+      `Search cannot be empty<br><br><button onclick='window.location.href="/"'>Back</button><link rel="stylesheet" href="style.css"><meta name="viewport" content="width=device-width, initial-scale=1.0">`
+    );
+    return;
+  }
+
+  try {
+    // Make the search request using axios
+    const response = await axios.get(
+      `https://customsearch.googleapis.com/customsearch/v1?cx=16cbbe12944fc4eb4&gl=us&q=${query}&key=${apikey}`
+    );
+
+    // Generate the main HTML content
+    let mainhtml = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+    <div id="overlay">
+      <div id="popup">
+        <p>This site uses cookies! Also, you can help us make this site better by enabling analytics</p>
+        <button onclick="consentdisable()">Accept and disable analytics</button>
+        <button onclick="consentenable()">Accept and enable analytics</button>
+      </div>
+    </div> 
+    <header>
+      <h1><a href="/">OpenSearch</a></h1>
+      <form action="/search" method="GET">
+        <input type="text" name="q" placeholder="Search..." id="search-bar">
+        <button type="submit">Search</button>
+      </form>
+    </header>
+    <div id="warning">
+      <p>This is a beta site, expect some bugs</p>
+      <button onclick='window.location.href="/beta/feedback"'>Give Feedback</button>
+    </div><br>
+    `;
+
+    // Process search results and generate HTML snippets
+    for (const item of response.data.items) {
+      const screenshot = await fetch("https://shot.screenshotapi.net/screenshot?token=" + process.env["SCREENSHOT_TOKEN"] + "&url=" + item.link + "&width=1000&height=1000&&output=json&file_type=png")
+      const screenshotjson = await screenshot.json()
+      console.log(item.link)
+      mainhtml += `
+      <div name="${item.cacheId}">
+<h2\><a href\="</span>${item.formattedUrl}"><span class="math-inline">${item.htmlTitle}</a\></h2\>
+<p\>Von <a href\="</span>${item.displayLink}"><span class="math-inline">${item.displayLink}</a\></p\>
+<p\></span>${item.htmlSnippet}</p>
+<p><a href="${item.formattedUrl}">${item.htmlFormattedUrl}</a></p>
+<img src="${screenshotjson.screenshot}" width="500">
+</div>
+`;
+}
+
+
+
+// Finalize the HTML and send the response
+mainhtml += `</body><script src='/analytics.js'></script><script src='/search.js'></script><script src='/search-cookies.js'></script></html>`;
+res.send(mainhtml);
+} catch (err) {
+// Handle errors
+if (err.includes("SyntaxError: Unexpected token < in JSON")) {
+    res.send("API Timeout!<br><button onclick='window.reload()'>Retry</button>")
+} else {
+  console.error(err);
+res.status(500).send(`
+<error>
+  <h1>Error: ${err.message}</h1>
+</error>
+Please open a bug issue at <a href="https://github.com/Our-Code-24/opensearch/issues">our github repo</a>
+`);
+}
+}
+});
 
 app.get("/search", (req, res) => {
   const query = req.query["q"];
@@ -83,7 +177,7 @@ if (query == "" || query == undefined) {
           </div>
         `;
       })
-      mainhtml += "</body><script src='/analytics.js'></script><script src='/search.js'></script><script src='/search-cookies.js'></script></html>";
+      mainhtml += "<footer><div>Not sure if its the right pages? Use our experiment: <a href='/img-p'>Image Preview</a></div></footer></body><script src='/analytics.js'></script><script src='/search.js'></script><script src='/search-cookies.js'></script></html>";
       res.send(mainhtml);
     }).catch((err) => {
       res.status(500).send(`
@@ -95,98 +189,99 @@ if (query == "" || query == undefined) {
     })
 })
 
+// Get user's cookie preferences
 app.get("/settings", (req, res) => {
-  let answer = {}
+const settings = {};
 
-  if (req.cookies["cookies-consent"]) {
-    answer["cookies-consent"] = req.cookies["cookies-consent"]
-  } else {
-    answer["cookies-consent"] = "undefined"
-  }
-  
-  if (req.cookies["analytics"]) {
-    answer["analytics"] = req.cookies["analytics"]
-  } else {
-    answer["analytics"] = "undefined"
-  }
-  
+if (req.cookies["cookies-consent"]) {
+settings["cookies-consent"] = req.cookies["cookies-consent"];
+} else {
+settings["cookies-consent"] = "undefined";
+}
 
-  res.send(JSON.stringify(answer))
-})
+if (req.cookies["analytics"]) {
+settings["analytics"] = req.cookies["analytics"];
+} else {
+settings["analytics"] = "undefined";
+}
 
+res.send(JSON.stringify(settings));
+});
+
+// Set user's cookie preferences
 app.get("/set-settings", (req, res) => {
-  const cookiesconsent = req.query["cookiesconsent"]
-  const analytics = req.query["analytics"]
+const cookiesConsent = req.query["cookiesconsent"];
+const analytics = req.query["analytics"];
 
+res.cookie("cookies-consent", cookiesConsent);
+res.cookie("analytics", analytics);
+res.sendStatus(200);
+});
 
-    res.cookie("cookies-consent", cookiesconsent)
-    res.cookie("analytics", analytics)
-    res.sendStatus(200)
-
-})
-
+// Serve analytics.js
 app.get("/analytics.js", (req, res) => {
-  res.sendFile(__dirname + "/publicjs/analytics.js")
-})
+res.sendFile(__dirname + "/publicjs/analytics.js");
+});
 
+// Report search query for analytics
 app.get("/api/analytics/report", (req, res) => {
-  const searchquery = req.query["q"]
+const searchQuery = req.query["q"];
+quickfunctions.analyticstool(searchQuery).then(() => {
+res.sendStatus(200);
+});
+});
 
-  quickfunctions.analyticstool(searchquery).then(() => {
-    res.sendStatus(200)
-  })
-})
-
+// Get analytics data
 app.get("/api/analytics", (req, res) => {
-  kv.get("analytics_data").then((val) => {
-    res.send(val)
-  })
-})
+kv.get("analytics_data").then((val) => {
+res.send(val);
+});
+});
 
+// Serve search.js
 app.get("/search.js", (req, res) => {
-  res.sendFile(__dirname + "/publicjs/search.js")
-})
+res.sendFile(__dirname + "/publicjs/search.js");
+});
 
+// Serve search-cookies.js
 app.get("/search-cookies.js", (req, res) => {
-  res.sendFile(__dirname + "/publicjs/searchcookies.js")
-})
+res.sendFile(__dirname + "/publicjs/searchcookies.js");
+});
 
+// Serve beta.html for feedback
 app.get("/beta/feedback", (req, res) => {
-  res.sendFile(__dirname + "/html/beta.html")
-})
+res.sendFile(__dirname + "/html/beta.html");
+});
 
+// Report feedback
 app.get("/api/beta/feedback/report", (req, res) => {
-  kv.get("betafeedback").then((val) => {
-    if (val != undefined) {
-      let bigjson = val
-      bigjson.push(req.query)
-      kv.set("betafeedback", bigjson).then(() => {
-        res.redirect("/")
-      })
-    } else {
-      kv.set("betafeedback", "[]").then(() => {
-        kv.get("betafeedback").then((newval) => {
-          let bigjson = newval
-          bigjson.push(req.query)
-          kv.set("betafeedback", bigjson).then(() => {
-            res.redirect("/")
-          })
-        })
-      })
-    }
-  })
-})
+kv.get("betafeedback").then((val) => {
+if (val === undefined) {
+val = [];
+}
 
+val.push(req.query);
+kv.set("betafeedback", val).then(() => {
+res.redirect("/");
+});
+});
+});
+
+// Get feedback (requires authorization)
 app.get("/api/beta/feedback", (req, res) => {
-  kv.get("betafeedback").then((val) => {
-    if (sanitize(req.query["code"]) == process.env["FEEDBACK"]) {
-      res.send(val)
-    } else {
-      res.sendStatus(403)
-    }
-  })
+kv.get("betafeedback").then((val) => {
+if (sanitize(req.query["code"]) === process.env["FEEDBACK"]) {
+res.send(val);
+} else {
+res.sendStatus(403); // Unauthorized
+}
+});
+});
+
+app.get("/img-p", (req, res) => {
+  res.sendFile(__dirname + "/html/img-p.html")
 })
 
 app.listen(port, () => {
-  console.log("We are online on port", port);
+console.log("We are online on port", port);
 });
