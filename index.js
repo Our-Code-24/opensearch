@@ -128,9 +128,9 @@ if (query == "" || query == undefined) {
 }
 
   axios.get("https://customsearch.googleapis.com/customsearch/v1?cx=16cbbe12944fc4eb4&gl=de&q=" + sanitizeString(query) + "&key=" + apikey).then((value) => {
-        value.data.items.forEach((item) => {
-          LoadMetaData(item.formattedUrl).then((axiosresult) => {
-          console.log(axiosresult)
+        value.data.items.forEach(async (item) => {
+          console.log(item.formattedUrl)
+          const metadata = await LoadMetaData(item.formattedUrl)
           mainhtml += `
             <div name="${item.cacheId}">
               <h2><a href="${item.formattedUrl}">${item.htmlTitle}</a></h2>
@@ -138,28 +138,17 @@ if (query == "" || query == undefined) {
               <p>${item.htmlSnippet}</p>
               <p><a href="${item.formattedUrl}">${item.htmlFormattedUrl}</a></p><br>
           `;
-          if (axiosresult.image != "") {
-            mainhtml += `<img src="${axiosresult.image}">`
-            mainhtml += "</div>"
+          if (metadata != undefined) {
+            if (metadata.image != "") {
+            mainhtml += `<img src="${axiosresult.image}"></div>`
+            }
           } else {
             mainhtml += "</div>"
           }
-        }).catch((err) => {
-          res.send(err)
-          console.log(err)
         })
         })
         mainhtml += "</body><script src='/analytics.js'></script><script src='/search.js'></script><script src='/search-cookies.js'></script></html>";
         res.send(mainhtml);
-      }).catch((err) => {
-      console.log(err)
-      res.status(500).send(`
-      <error>
-      <h1>Error: ${err}</h1>
-      </error>
-      Please open a bug issue at <a href="https://github.com/Our-Code-24/opensearch/issues">our github repo</a>
-      `)
-    })
 })
 
 
