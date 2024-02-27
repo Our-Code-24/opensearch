@@ -130,6 +130,65 @@ Please open a bug issue at <a href="https://github.com/Our-Code-24/opensearch/is
 }
 });
 
+app.get("/search", (req, res) => {
+  const query = req.query["q"];
+  let mainhtml = `
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+  <div id="overlay">
+    <div id="popup">
+      <p>This site uses cookies! Also, you can help us make this site better by enabling analytics</p>
+      <button onclick="consentdisable()">Accept and disable analytics</button>
+      <button onclick="consentenable()">Accept and enable analytics</button>
+    </div>
+  </div> 
+  <header>
+    <h1><a href="/">OpenSearch</a></h1>
+    <form action="/search" method="GET">
+      <input type="text" name="q" placeholder="Search..." id="search-bar">
+      <button type="submit">Search</button>
+    </form>
+  </header>
+  <div id="warning">
+      <p>This is a beta site, expect some bugs</p>
+      <button onclick='window.location.href="/beta/feedback"'>Give Feedback</button>
+    </div><br>
+  `;
+
+if (query == "" || query == undefined) {
+  res.send(`Search cannot be empty<br><br><button onclick='window.location.href="/"'>Back</button><link rel="stylesheet" href="style.css"><meta name="viewport" content="width=device-width, initial-scale=1.0">`)
+  return
+}
+
+  axios.get("https://customsearch.googleapis.com/customsearch/v1?cx=16cbbe12944fc4eb4&gl=de&q=" + query + "&key=" + apikey).then((value) => {
+      value.data.items.forEach((item) => {
+        mainhtml += `
+          <div name="${item.cacheId}">
+            <h2><a href="${item.formattedUrl}">${item.htmlTitle}</a></h2>
+            <p>Von <a href="${item.displayLink}">${item.displayLink}</a></p>
+            <p>${item.htmlSnippet}</p>
+            <p><a href="${item.formattedUrl}">${item.htmlFormattedUrl}</a></p>
+          </div>
+        `;
+      })
+      mainhtml += "</body><script src='/analytics.js'></script><script src='/search.js'></script><script src='/search-cookies.js'></script></html>";
+      res.send(mainhtml);
+    }).catch((err) => {
+      res.status(500).send(`
+      <error>
+      <h1>Error: ${err}</h1>
+      </error>
+      Please open a bug issue at <a href="https://github.com/Our-Code-24/opensearch/issues">our github repo</a>
+      `)
+    })
+})
+
 // Get user's cookie preferences
 app.get("/settings", (req, res) => {
 const settings = {};
