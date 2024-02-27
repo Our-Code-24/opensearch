@@ -3,6 +3,7 @@ const app = quickfunctions.createnewapp()
 const port = 3000;
 const axios = require("axios");
 const {kv} = require("@vercel/kv")
+const socket = require("vercelsocket")()
 
 let analyticsdata = {}
 if (process.env["API"]) {
