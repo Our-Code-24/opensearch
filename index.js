@@ -285,6 +285,7 @@ app.get("/img-p", (req, res) => {
 app.get("/favicon.ico", (req, res) => {
   res.sendFile(__dirname + "/favicon.ico")
 })
+
 app.listen(port, () => {
 console.log("We are online on port", port);
 });
