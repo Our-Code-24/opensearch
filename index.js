@@ -22,7 +22,7 @@ app.use(require("cookie-parser")());
 
 // Redirect to "/beta" for the root path
 app.get("/", (req, res) => {
-  res.redirect("/beta");
+  res.sendFile(__dirname + "/homepage.html")
 });
 
 // Serve the betatest.pdf file
