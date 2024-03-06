@@ -21,7 +21,7 @@ const apikey = process.env["API"];
 app.use(require("cookie-parser")());
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/homepage.html")
+  res.sendFile(__dirname + "/html/homepage.html")
 });
 
 app.get("/betatest.pdf", (req, res) => {
