@@ -11,7 +11,7 @@ function getRndInteger(min, max) {
 
 let analyticsdata = {};
 if (process.env["API"]) {
-  // ... existing code ...
+
 } else {
   require("dotenv").config({ path: ".env.development.local" });
 }
@@ -20,27 +20,23 @@ const apikey = process.env["API"];
 
 app.use(require("cookie-parser")());
 
-// Redirect to "/beta" for the root path
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/homepage.html")
 });
 
-// Serve the betatest.pdf file
 app.get("/betatest.pdf", (req, res) => {
   res.sendFile(__dirname + "/betatest.pdf");
 });
 
-// Serve the beta.html file for the "/beta" route
+
 app.get("/beta", (req, res) => {
   res.sendFile(__dirname + "/html/index.html");
 });
 
-// Serve style.css
 app.get("/style.css", (req, res) => {
   res.sendFile(__dirname + "/html/style.css");
 });
 
-// Serve script.js
 app.get("/script.js", (req, res) => {
   res.sendFile(__dirname + "/publicjs/script.js");
 });
