@@ -282,6 +282,10 @@ app.get("/favicon.ico", (req, res) => {
   res.sendFile(__dirname + "/favicon.ico")
 })
 
+app.get("/.well-known/discord", (req, res) => {
+  res.send("dh=b469ec13cb6b78bd9e57feb0b5072d6721c063af")
+})
+
 app.listen(port, () => {
 console.log("We are online on port", port);
 });
