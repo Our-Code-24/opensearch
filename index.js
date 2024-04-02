@@ -315,6 +315,7 @@ app.get("/points", requiresAuth(), async (req, res) => {
     kv.set(req.oidc.user.sid, 0)
     res.send("0")
   } else {
+    kv.set(req.oidc.user.sid, Number(points) + 1)
     res.send(String(points))
   }
 })
