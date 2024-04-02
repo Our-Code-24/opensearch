@@ -2,7 +2,8 @@ const { rateLimiter, quickfunctions } = require('./src/middlewares/index.js');
 const app = quickfunctions.createnewapp()
 const port = 3000;
 const axios = require("axios");
-const {kv} = require("@vercel/kv")
+const { auth } = require('express-openid-connect');
+const { requiresAuth } = require('express-openid-connect');
 
 let analyticsdata = {}
 if (process.env["API"]) {
@@ -10,6 +11,19 @@ if (process.env["API"]) {
 } else {
   require("dotenv").config({path: ".env.development.local"})
 }
+
+const {kv} = require("@vercel/kv")
+
+const config = {
+  authRequired: false,
+  auth0Logout: true,
+  secret: process.env["AUTH_CLIENT_SECRET"],
+  baseURL: 'http://localhost:3000',
+  clientID: process.env["AUTH_CLIENT_ID"],
+  issuerBaseURL: 'https://opensearch-mu.eu.auth0.com'
+};
+
+app.use(auth(config));
 
 const apikey = process.env["API"]
 
@@ -36,7 +50,7 @@ app.get("/script.js", (req, res) => {
   res.sendFile(__dirname + "/publicjs/script.js")
 })
 
-app.get("/search", (req, res) => {
+app.get("/search", async (req, res) => {
   const query = req.query["q"];
   let mainhtml = `
   <!DOCTYPE html>
@@ -72,7 +86,7 @@ if (query == "" || query == undefined) {
   return
 }
 
-  axios.get("https://customsearch.googleapis.com/customsearch/v1?cx=16cbbe12944fc4eb4&gl=de&q=" + query + "&key=" + apikey).then((value) => {
+  axios.get("https://customsearch.googleapis.com/customsearch/v1?cx=16cbbe12944fc4eb4&gl=de&q=" + query + "&key=" + apikey).then(async (value) => {
       value.data.items.forEach((item) => {
         mainhtml += `
           <div name="${item.cacheId}">
@@ -84,6 +98,10 @@ if (query == "" || query == undefined) {
         `;
       })
       mainhtml += "</body><script src='/analytics.js'></script><script src='/search.js'></script><script src='/search-cookies.js'></script></html>";
+      if (req.oidc.user) {
+        const newval = Number(await kv.get(req.oidc.user.sid)) + 1
+        await kv.set(await kv.get(req.oidc.user.sid), newval)
+      }
       res.send(mainhtml);
     }).catch((err) => {
       res.status(500).send(`
@@ -92,6 +110,7 @@ if (query == "" || query == undefined) {
       </error>
       Please open a bug issue at <a href="https://github.com/Our-Code-24/opensearch/issues">our github repo</a>
       `)
+      throw err
     })
 })
 
@@ -142,7 +161,7 @@ app.get("/api/analytics", (req, res) => {
     res.send(val)
   })
 })
-
+// req.oidc.isAuthenticated()
 app.get("/search.js", (req, res) => {
   res.sendFile(__dirname + "/publicjs/search.js")
 })
@@ -185,6 +204,20 @@ app.get("/api/beta/feedback", (req, res) => {
       res.sendStatus(403)
     }
   })
+})
+
+app.get('/profile', (req, res) => {
+  res.send(JSON.stringify(req.oidc.user))
+});
+
+app.get("/points", requiresAuth(), async (req, res) => {
+  const points = await kv.get(req.oidc.user.sid)
+  if (points == undefined) {
+    kv.set(req.oidc.user.sid, 0)
+    res.send("0")
+  } else {
+    res.send(String(points))
+  }
 })
 
 app.listen(port, () => {

@@ -41,4 +41,32 @@ function consentenable() {
   })
 }
 
+setTimeout(() => {
+  fetch("/profile").then((resi) => {
+    let res = resi.clone()
+    console.log()
+    resi.text().then((body) => {
+    if (body) {
+      res.json().then(async (jsonvalue) => {
+        document.getElementById("profile-picture").src = jsonvalue.picture
+        document.getElementById("points").innerHTML = await (await fetch("/points")).text() + " Point"
+      }).catch((error) => {
+        // Handle errors here, e.g., log the error or show a user-friendly message
+        console.error('Error fetching profile data:', error);
+      });
+    } else {
+      document.getElementById("profile-picture").remove()
+      document.getElementById("points").remove()
+      let account = document.getElementById("account")
+      let accountbutton = document.createElement("button")
+      accountbutton.innerText= "Login to earn points"
+      accountbutton.addEventListener("click", (usedevent) => {
+        window.location.href = "/login"
+      })
+      account.appendChild(accountbutton)
+    }
+  })
+  })
+}, 200)
+
 // Stoppedwumm was here
