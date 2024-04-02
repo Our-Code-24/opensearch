@@ -49,7 +49,7 @@ setTimeout(() => {
     if (body) {
       res.json().then(async (jsonvalue) => {
         document.getElementById("profile-picture").src = jsonvalue.picture
-        document.getElementById("points").innerHTML = await (await fetch("/points")).text() + " Point"
+        document.getElementById("points").innerHTML = await (await fetch("/points")).text() + " Points"
       }).catch((error) => {
         // Handle errors here, e.g., log the error or show a user-friendly message
         console.error('Error fetching profile data:', error);
