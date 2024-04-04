@@ -190,8 +190,8 @@ if (query == "" || query == undefined) {
 
       mainhtml += "</body><script src='/analytics.js'></script><script src='/search.js'></script><script src='/search-cookies.js'></script></html>";
       if (req.oidc.user) {
-        const newval = Number(await kv.get(req.oidc.user.sid))
-        await kv.set(req.oidc.user.sid, newval + 1)
+        const newval = Number(await kv.get(req.oidc.user.username))
+        await kv.set(req.oidc.user.username, newval + 1)
       }
       res.send(mainhtml);
     }).catch((err) => {
@@ -310,9 +310,9 @@ app.get('/profile', (req, res) => {
 });
 
 app.get("/points", requiresAuth(), async (req, res) => {
-  const points = await kv.get(req.oidc.user.sid)
+  const points = await kv.get(req.oidc.user.username)
   if (points == undefined) {
-    kv.set(req.oidc.user.sid, 0)
+    kv.set(req.oidc.user.username, 0)
     res.send("0")
   } else {
     res.send(String(points))
