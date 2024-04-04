@@ -91,7 +91,7 @@ app.get("/imagesearch", async (req, res) => {
       </div>
     </div> 
     <header>
-      <h1><a href="/">OpenSearch</a></h1>
+      <h1><a href="/beta">OpenSearch</a></h1>
       <form action="/search" method="GET">
         <input type="text" name="q" placeholder="Search..." id="search-bar">
         <button type="submit">Search</button>
@@ -159,7 +159,7 @@ app.get("/search", async (req, res) => {
     </div>
   </div> 
   <header>
-    <h1><a href="/">OpenSearch</a></h1>
+    <h1><a href="/beta">OpenSearch</a></h1>
     <form action="/search" method="GET">
       <input type="text" name="q" placeholder="Search..." id="search-bar">
       <button type="submit">Search</button>
@@ -277,7 +277,7 @@ val = [];
 
 val.push(req.query);
 kv.set("betafeedback", val).then(() => {
-res.redirect("/");
+res.redirect("/beta");
 });
 });
 });
