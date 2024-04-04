@@ -50,6 +50,13 @@ setTimeout(() => {
       res.json().then(async (jsonvalue) => {
         document.getElementById("profile-picture").src = jsonvalue.picture
         document.getElementById("points").innerHTML = await (await fetch("/points")).text() + " Points"
+        const logout = document.createElement("button")
+        logout.innerText = "Logout"
+        logout.addEventListener("click", () => {
+          window.location.href = "/logout"
+        })
+        let account = document.getElementById("account")
+        account.appendChild(logout)
       }).catch((error) => {
         // Handle errors here, e.g., log the error or show a user-friendly message
         console.error('Error fetching profile data:', error);
