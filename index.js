@@ -23,7 +23,7 @@ const config = {
   authRequired: false,
   auth0Logout: true,
   secret: process.env["AUTH_CLIENT_SECRET"],
-  baseURL: 'https://opensearch-mu.vercel.app',
+  baseURL: process.env["URL"] || "http://localhost:3000",
   clientID: process.env["AUTH_CLIENT_ID"],
   issuerBaseURL: 'https://opensearch-mu.eu.auth0.com'
 };
@@ -189,9 +189,9 @@ if (query == "" || query == undefined) {
       })
 
       mainhtml += "</body><script src='/analytics.js'></script><script src='/search.js'></script><script src='/search-cookies.js'></script></html>";
-      if (req.oidc.user) {
-        const newval = Number(await kv.get(req.oidc.user.username))
-        await kv.set(req.oidc.user.username, newval + 1)
+      if (req.oidc.user.sub) {
+        const newval = Number(await kv.get(req.oidc.user.sub))
+        await kv.set(req.oidc.user.sub, newval + 1)
       }
       res.send(mainhtml);
     }).catch((err) => {
@@ -310,9 +310,9 @@ app.get('/profile', (req, res) => {
 });
 
 app.get("/points", requiresAuth(), async (req, res) => {
-  const points = await kv.get(req.oidc.user.username)
+  const points = await kv.get(req.oidc.user.sub)
   if (points == undefined) {
-    kv.set(req.oidc.user.username, 0)
+    kv.set(req.oidc.user.sub, 0)
     res.send("0")
   } else {
     res.send(String(points))
