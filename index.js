@@ -189,7 +189,7 @@ if (query == "" || query == undefined) {
       })
 
       mainhtml += "</body><script src='/analytics.js'></script><script src='/search.js'></script><script src='/search-cookies.js'></script></html>";
-      if (req.oidc.user.sub) {
+      if (req.oidc.user) {
         const newval = Number(await kv.get(req.oidc.user.sub))
         await kv.set(req.oidc.user.sub, newval + 1)
       }
