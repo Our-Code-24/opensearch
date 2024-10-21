@@ -19,6 +19,6 @@
   },
   "devDependencies": {
     "dotenv": "^16.4.5",
-    "vercel": "^33.6.2"
+    "vercel": "^37.11.0"
   }
 }
